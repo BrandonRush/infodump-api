@@ -1,31 +1,36 @@
-language: node_js
-node_js:
-  - stable
+language: python
+dist: xenial
+python: 3.7
+
 branches:
   only:
     - master
-cache:
-  yarn: true
-  directories:
-    - $HOME/.local
-    - node_modules
+
+services:
+  - docker
+
+env:
+  global:
+    - PIP_DISABLE_PIP_VERSION_CHECK=on
+    - PIP_QUIET=1
+    - DJANGO_VERSION=">=1.8,<1.9"
+
 before_install:
-  - cd frontend
+  - docker build .
+  - docker run -d -p 127.0.0.1:80:4567 carlad/sinatra /bin/sh -c "cd /root/sinatra; bundle exec foreman start;"
+  - docker ps -a
+  - docker run carlad/sinatra /bin/sh -c "cd /root/sinatra; bundle exec rake test"
+
 install:
-  - yarn install
-  - pip install --user awscli
-script:
-  - yarn test
-  - yarn run build:prod
-before_deploy:
-  - aws s3 rm s3://www.infodump.io --recursive --region $S3_REGION
+  - pip install -r requirements.txt
+
+script: python manage.py test
+
 deploy:
-  provider: s3
+  provider: elasticbeanstalk
   access_key_id: $AWS_ACCESS_KEY_ID
   secret_access_key: $AWS_SECRET_ACCESS_KEY
-  bucket: www.infodump.io
-  skip_cleanup: true
   region: $S3_REGION
-  local-dir: build
-after_deploy:
-  - aws cloudfront create-invalidation --distribution-id $DISTRIBUTION_ID --paths /*
+  app: 'example-app-name'
+  env: 'example-app-environment'
+  bucket_name: 'the-target-S3-bucket'
