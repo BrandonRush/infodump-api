@@ -10,12 +10,12 @@ import requests
 import json
 
 
+@api_view(['GET'])
 def ip(request):
-    return HttpResponse(request.META['REMOTE_ADDR'])
+    print(request.META['REMOTE_ADDR'])
+    return Response(request.META['REMOTE_ADDR'])
 
 
+@api_view(['GET'])
 def useragent(request):
-    return HttpResponse(request.META['HTTP_USER_AGENT'])
-
-# def useragent(request):
-#     return HttpResponse(request.META['HTTP_USER_AGENT'])
+    return Response(request.META['HTTP_USER_AGENT'])
