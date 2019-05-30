@@ -1,4 +1,3 @@
-# See https://help.github.com/ignore-files/ for more about ignoring files.
 # Assets
 *.jpg
 *.jpeg
@@ -14,6 +13,7 @@ node_modules/
 
 # Compiled output
 build
+*.pyc
 
 # Runtime data
 database.sqlite
@@ -37,3 +37,4 @@ yarn-error.log*
 
 # Misc
 .DS_Store
+

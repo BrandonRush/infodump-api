@@ -11,26 +11,25 @@ services:
 
 env:
   global:
-    - PIP_DISABLE_PIP_VERSION_CHECK=on
-    - PIP_QUIET=1
-    - DJANGO_VERSION=">=1.8,<1.9"
+    - DJANGO_DEBUG=FALSE
 
 before_install:
-  - docker build .
-  - docker run -d -p 127.0.0.1:80:4567 carlad/sinatra /bin/sh -c "cd /root/sinatra; bundle exec foreman start;"
-  - docker ps -a
-  - docker run carlad/sinatra /bin/sh -c "cd /root/sinatra; bundle exec rake test"
+  - docker-compose up -d
+  - sleep 10
 
 install:
-  - pip install -r requirements.txt
+  - docker ps -a
 
 script: python manage.py test
+
+after_install:
+  - docker-compose down
 
 deploy:
   provider: elasticbeanstalk
   access_key_id: $AWS_ACCESS_KEY_ID
   secret_access_key: $AWS_SECRET_ACCESS_KEY
   region: $S3_REGION
-  app: 'example-app-name'
-  env: 'example-app-environment'
-  bucket_name: 'the-target-S3-bucket'
+  app: $EB_APP_NAME
+  env: $EB_ENV_NAME
+  bucket_name: $S3_BUCKET_NAME
