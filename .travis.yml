@@ -13,17 +13,22 @@ env:
   global:
     - DJANGO_DEBUG=FALSE
 
-before_install:
-  - docker-compose up -d
-  - sleep 10
+# before_install:
+#   - docker-compose up -d
+#   - sleep 10
 
-install:
+before_install:
+  - docker build -t infodump-api .
+  - docker run -d -p 127.0.0.1:8000:8000 --name app infodump-api
   - docker ps -a
 
-# script: python manage.py test
+# after_install:
 
-after_install:
-  - docker-compose down
+script:
+  - docker exec app python manage.py test
+
+after_script:
+  - docker rm -f app
 
 deploy:
   provider: elasticbeanstalk
