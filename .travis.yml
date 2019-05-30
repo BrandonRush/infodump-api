@@ -20,7 +20,7 @@ before_install:
 install:
   - docker ps -a
 
-script: python manage.py test
+# script: python manage.py test
 
 after_install:
   - docker-compose down
