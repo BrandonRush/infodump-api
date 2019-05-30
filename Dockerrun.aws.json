@@ -7,6 +7,5 @@
     }
   ],
   "Logging": "/var/log/infodump",
-  "Volumes": [],
-  "Entrypoint": "./launch.sh"
+  "Volumes": []
 }
