@@ -7,5 +7,5 @@
   ],
   "Logging": "/var/log/infodump",
   "Volumes": [],
-  "Entrypoint": "docker-compose up --build"
+  "Entrypoint": "/launch.sh"
 }
