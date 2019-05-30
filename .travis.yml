@@ -29,7 +29,7 @@ deploy:
   provider: elasticbeanstalk
   access_key_id: $AWS_ACCESS_KEY_ID
   secret_access_key: $AWS_SECRET_ACCESS_KEY
-  region: $S3_REGION
+  region: $EB_REGION
   app: $EB_APP_NAME
   env: $EB_ENV_NAME
   bucket_name: $S3_BUCKET_NAME
