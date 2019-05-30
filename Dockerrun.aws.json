@@ -5,5 +5,6 @@
       "ContainerPort": "8000"
     }
   ],
-  "Logging": "/var/log/infodump"
+  "Logging": "/var/log/infodump",
+  "Volumes": []
 }
